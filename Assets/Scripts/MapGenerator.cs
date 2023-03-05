@@ -39,7 +39,7 @@ public class MapGenerator : MonoBehaviour {
 
     private void Awake()
     {
-		falloffMap = FallofGenerator.GenerateFalloffMap(mapChunkSize);
+		falloffMap = FalloffGenerator.GenerateFalloffMap(mapChunkSize);
     }
 
     public void DrawMapInEditor()
@@ -60,7 +60,7 @@ public class MapGenerator : MonoBehaviour {
 				TextureGenerator.TextureFromColourMap(mapData.colourMap, mapChunkSize, mapChunkSize));
         } else if (drawMode == DrawMode.FalloffMap)
 		{
-			display.DrawTexture(TextureGenerator.TextureFromHeightMap(FallofGenerator.GenerateFalloffMap(mapChunkSize)));
+			display.DrawTexture(TextureGenerator.TextureFromHeightMap(FalloffGenerator.GenerateFalloffMap(mapChunkSize)));
 		}
     }
 
@@ -156,7 +156,7 @@ public class MapGenerator : MonoBehaviour {
 			octaves = 0;
 		}
 
-		falloffMap = FallofGenerator.GenerateFalloffMap(mapChunkSize);
+		falloffMap = FalloffGenerator.GenerateFalloffMap(mapChunkSize);
 	}
 
 	struct MapThreadInfo<T>

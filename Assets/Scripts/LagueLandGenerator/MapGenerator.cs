@@ -2,6 +2,7 @@
 using System;
 using System.Threading;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 
 public class MapGenerator : MonoBehaviour {
 
@@ -34,6 +35,8 @@ public class MapGenerator : MonoBehaviour {
 
 	public bool useColour;
 
+	public Vector2 FalloffPowers;
+
 	float[,] falloffMap;
 
 	Queue<MapThreadInfo<MapData>> mapDataThreadInfoQueue = new Queue<MapThreadInfo<MapData>>();
@@ -41,7 +44,7 @@ public class MapGenerator : MonoBehaviour {
 
     private void Awake()
     {
-		falloffMap = FalloffGenerator.GenerateFalloffMap(mapChunkSize);
+		falloffMap = FalloffGenerator.GenerateFalloffMap(mapChunkSize, FalloffPowers);
     }
 
     public void DrawMapInEditor()
@@ -62,7 +65,7 @@ public class MapGenerator : MonoBehaviour {
 				TextureGenerator.TextureFromColourMap(mapData.colourMap, mapChunkSize, mapChunkSize));
         } else if (drawMode == DrawMode.FalloffMap)
 		{
-			display.DrawTexture(TextureGenerator.TextureFromHeightMap(FalloffGenerator.GenerateFalloffMap(mapChunkSize)));
+			display.DrawTexture(TextureGenerator.TextureFromHeightMap(FalloffGenerator.GenerateFalloffMap(mapChunkSize, FalloffPowers)));
 		}
     }
 
@@ -126,14 +129,19 @@ public class MapGenerator : MonoBehaviour {
     }
 
     MapData GenerateMapData(Vector2 centre) {
-		float[,] noiseMap = Noise.GenerateNoiseMap (mapChunkSize, mapChunkSize, seed, noiseScale, octaves, persistance, lacunarity, centre + offset, normalizeMode);
+		NoiseMap Map = Noise.GenerateNoiseMap (mapChunkSize, mapChunkSize, seed, noiseScale, octaves, persistance, lacunarity, centre + offset, normalizeMode);
+		float [,] noiseMap = Map.noiseMap;
+  //      System.Random prng = new System.Random(seed);
+  //      string numChar = prng.Next().ToString();
+  //      char[] chars = numChar.ToCharArray();
+		//int randNoIslandSpawnNum = int.Parse(chars[1].ToString());
 
-		Color[] colourMap = new Color[mapChunkSize * mapChunkSize];
+        Color[] colourMap = new Color[mapChunkSize * mapChunkSize];
 		for (int y = 0; y < mapChunkSize; y++) {
 			for (int x = 0; x < mapChunkSize; x++) {
 				if (useFalloff)
 				{
-					noiseMap[x,y] = Mathf.Clamp(noiseMap[x,y] - falloffMap[x,y], 0f, 1f);
+					noiseMap[x,y] = Map.spawnsIsland ? Mathf.Clamp(noiseMap[x,y] - falloffMap[x,y], 0f, 1f) : 0f;
 				}
 				float currentHeight = noiseMap [x, y];
 
@@ -165,7 +173,7 @@ public class MapGenerator : MonoBehaviour {
 			octaves = 0;
 		}
 
-		falloffMap = FalloffGenerator.GenerateFalloffMap(mapChunkSize);
+		falloffMap = FalloffGenerator.GenerateFalloffMap(mapChunkSize, FalloffPowers);
 	}
 
 	struct MapThreadInfo<T>

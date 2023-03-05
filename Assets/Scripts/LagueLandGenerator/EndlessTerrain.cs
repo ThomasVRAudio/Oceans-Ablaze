@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EndlessTerrain : MonoBehaviour
 {
-    const float scale = 2f;
+    public const float scale = 1f;
 
     const float viewerMoveThresholdForChunkUpdate = 25f;
     const float sqrViewerMoveThresholdForChunkUpdate = viewerMoveThresholdForChunkUpdate * viewerMoveThresholdForChunkUpdate;
@@ -20,6 +20,7 @@ public class EndlessTerrain : MonoBehaviour
     static MapGenerator mapGenerator;
     int chunkSize;
     int chunksVisibleInViewDst;
+
 
     Dictionary<Vector2, TerrainChunk> terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
     static List<TerrainChunk> terrainChunksVisibleLastUpdate = new List<TerrainChunk>();
@@ -97,6 +98,8 @@ public class EndlessTerrain : MonoBehaviour
         LODMesh[] lodMeshes;
         LODMesh collisionLODMesh;
 
+        public bool setTexture;
+
         public TerrainChunk(Vector2 coord, int size, LODInfo[] detailLevels, Transform parent, Material material)
         {
             this.detailLevels = detailLevels;
@@ -136,7 +139,8 @@ public class EndlessTerrain : MonoBehaviour
           mapDataReceived = true;
 
             Texture2D texture = TextureGenerator.TextureFromColourMap(mapData.colourMap, MapGenerator.mapChunkSize, MapGenerator.mapChunkSize);
-            meshRenderer.material.mainTexture = texture;
+            
+            meshRenderer.material.mainTexture = setTexture ? texture : null;
 
             UpdateTerrainChunk();
         }

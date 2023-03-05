@@ -6,11 +6,8 @@ public class CameraMovement : MonoBehaviour
 {
     [SerializeField] private float speed;
     private float up = 0f;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+
+    float xRot = 0, yRot = 0;
 
     // Update is called once per frame
     void Update()
@@ -21,14 +18,26 @@ public class CameraMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.E))
         {
             up = 1;
-        } else if (Input.GetKey(KeyCode.Q)) {
+        }
+        else if (Input.GetKey(KeyCode.Q))
+        {
             up = -1;
-        } else
+        }
+        else
         {
             up = 0;
         }
 
-        transform.position += new Vector3(x, up, y).normalized * speed * Time.deltaTime;
-        
+        transform.position += (transform.rotation * new Vector3(x, up, y).normalized) * speed * Time.deltaTime;
+
+
+        if (Input.GetMouseButton(1))
+        {
+            xRot = Input.mousePosition.x;
+            yRot = Input.mousePosition.y;
+
+        }
+
+        transform.rotation = Quaternion.Euler(-yRot, xRot, 0);
     }
 }

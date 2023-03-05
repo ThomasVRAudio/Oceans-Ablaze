@@ -32,6 +32,8 @@ public class MapGenerator : MonoBehaviour {
 
 	public TerrainType[] regions;
 
+	public bool useColour;
+
 	float[,] falloffMap;
 
 	Queue<MapThreadInfo<MapData>> mapDataThreadInfoQueue = new Queue<MapThreadInfo<MapData>>();
@@ -134,12 +136,19 @@ public class MapGenerator : MonoBehaviour {
 					noiseMap[x,y] = Mathf.Clamp(noiseMap[x,y] - falloffMap[x,y], 0f, 1f);
 				}
 				float currentHeight = noiseMap [x, y];
-				for (int i = 0; i < regions.Length; i++) {
-					if (currentHeight >= regions [i].height) {
-						colourMap [y * mapChunkSize + x] = regions [i].colour;
-					}else
+
+				if (useColour)
+				{
+					for (int i = 0; i < regions.Length; i++)
 					{
-						break;
+						if (currentHeight >= regions[i].height)
+						{
+							colourMap[y * mapChunkSize + x] = regions[i].colour;
+						}
+						else
+						{
+							break;
+						}
 					}
 				}
 			}

@@ -98,16 +98,18 @@ Material:
     - _AlphaSrcBlend: 1
     - _AlphaToMask: 0
     - _AlphaToMaskInspectorValue: 0
-    - _Amplitude: 0.41
+    - _Amplitude: 24.59
     - _BlendMode: 0
     - _BumpScale: 1
     - _ConservativeDepthOffsetEnable: 0
     - _CullMode: 2
     - _CullModeForward: 2
     - _Cutoff: 0.5
+    - _Depth: 0
     - _DepthMaxDistance: 1
     - _DepthOffsetEnable: 0
     - _DetailNormalMapScale: 1
+    - _Divider: 1
     - _DoubleSidedEnable: 0
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 2
@@ -118,11 +120,12 @@ Material:
     - _FoamCutoff: 1
     - _FoamMaxDistance: 0.4
     - _FoamMinDistance: 0.04
-    - _FoamScale: 100
+    - _FoamScale: 200
     - _FoamSpeed: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.947
     - _GlossyReflections: 1
+    - _Gravity: 0
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -141,7 +144,7 @@ Material:
     - _SpecularHighlights: 1
     - _Speed: 5
     - _SrcBlend: 1
-    - _Steepness: 0.13
+    - _Steepness: 0.389
     - _StencilRef: 0
     - _StencilRefDepth: 0
     - _StencilRefDistortionVec: 4
@@ -165,18 +168,20 @@ Material:
     - _TransparentZWrite: 0
     - _UVSec: 0
     - _UseShadowThreshold: 0
-    - _WaterDepth: 9.52
-    - _WaveLength: 10
+    - _WaterDepth: 6.84
+    - _WaterSpeed: 8.73
+    - _WaveLength: 9.52
+    - _Wave_Height: 9.65
     - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
     - _ZWrite: 0
     m_Colors:
     - _Color: {r: 0.26192597, g: 0.48674574, b: 0.509434, a: 0.62352943}
-    - _Deep_Water: {r: 0, g: 0.06557047, b: 1, a: 0.9372549}
+    - _Deep_Water: {r: 0.11053756, g: 0.16077247, b: 0.8679245, a: 1}
     - _DepthGradientDeep: {r: 0.08599999, g: 0.40699998, b: 1, a: 0.749}
     - _DepthGradientShallow: {r: 0.32499993, g: 0.807, b: 0.971, a: 0.7647059}
-    - _Direction: {r: 2, g: 1.3, b: 0, a: 0}
+    - _Direction: {r: 0.59, g: 1.3, b: 0, a: 0}
     - _DoubleSidedConstants: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
@@ -185,6 +190,9 @@ Material:
     - _WaveA: {r: 0.5, g: 1, b: 0.1, a: 6}
     - _WaveB: {r: 0.5, g: 0.5, b: 0.05, a: 3}
     - _WaveC: {r: 0.88, g: 1.3, b: 0.012, a: 1}
+    - _Wave_A: {r: 0.49, g: 1.09, b: 0.1, a: 1.54}
+    - _Wave_B: {r: 0.48, g: 0.36, b: 0.007, a: 12.7}
+    - _Wave_C: {r: 1.26, g: 1, b: 0.02, a: 0.79}
   m_BuildTextureStacks: []
 --- !u!114 &4712419844263436412
 MonoBehaviour:

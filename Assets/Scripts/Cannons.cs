@@ -24,10 +24,6 @@ public class Cannons : MonoBehaviour
 
     [SerializeField] private CannonArc visualArc;
 
-    private void Update()
-    {
-        DrawArc(); // TEST
-    }
     public void SetCannonRotations(CannonSide side, float degrees)
     {
         if (degrees > MAX_CANNON_DEGREES) 
@@ -63,7 +59,19 @@ public class Cannons : MonoBehaviour
             cannonArray[i].transform.localRotation = Quaternion.AngleAxis(90 - degrees, Vector3.forward);
 
         }
-        
+
+        DrawArc(side);       
+    }
+
+    private void DrawArc(CannonSide side)
+    {
+        Transform cannon = side == CannonSide.Left ? CannonsLeft[0].transform : CannonsRight[0].transform;
+        //Side + Direction to width
+
+        float rot = side == CannonSide.Left ? -90 : 90;
+
+        Quaternion dir = cannon.rotation * Quaternion.Euler(rot, 90, 0);
+        visualArc.RenderArcMesh(dir * Vector3.forward, cannonForce, cannon, side);
     }
 
     public void LaunchCannons(CannonSide side)
@@ -105,13 +113,8 @@ public class Cannons : MonoBehaviour
 
             CannonballPool.Instance.DestroyCannonball(cBall, 3f);
         }
-    }
 
-    private void DrawArc()
-    {
-        Transform cannonPos = CannonsLeft[0].transform;
-        Quaternion dir = cannonPos.rotation * Quaternion.Euler(-90, 90, 0);
-        visualArc.RenderArcMesh(dir * Vector3.forward, cannonPos.position, cannonForce, CannonsLeft[0].transform);
+        visualArc.StopRenderArcMesh();
     }
 
     private void OnDrawGizmos()

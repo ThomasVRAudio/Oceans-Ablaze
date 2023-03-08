@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
+using System.Threading.Tasks;
 using UnityEngine;
-using TMathFunctions;
 
 public class CannonArc : MonoBehaviour
 {
@@ -12,34 +10,41 @@ public class CannonArc : MonoBehaviour
     private Vector3[] _vertices;
     private int[] _triangles;
 
-    private LineRenderer _lineRenderer;
-
-    public GameObject sphere;
-
     [SerializeField] private Vector3 arcWidth = new Vector3(0,0,-10);
-    [SerializeField] private Vector2 arcUVMap = new Vector3(10,10);
 
     [Range(0.1f,10)]
     [SerializeField] private float arcLength = 5;
-    public Vector3 rotationTest;
 
-    [SerializeField] private GameObject ship;
-
-    private bool isShowing = false;
+    [SerializeField] private LayerMask arcMask;
 
     void Start()
     {
-        _lineRenderer = GetComponent<LineRenderer>();
-
         mesh = new Mesh();
         GetComponent<MeshFilter>().mesh = mesh;
-
     }
 
-    public void RenderArcMesh(Vector3 directionVector, Vector3 launchPosition, float force, Transform obj)
+    public async void StopRenderArcMesh()
     {
+        await Task.Delay(10);
+        mesh.Clear();
+    }
 
-       List<Vector3> line = GetArcPoints(directionVector, launchPosition, force, obj);
+    public void RenderArcMesh(Vector3 directionVector, float force, Transform cannonTransform, Cannons.CannonSide side)
+    {
+        Vector3 canPos;
+        float widthDirection;
+        if (side == Cannons.CannonSide.Right)
+        {
+            canPos = cannonTransform.position + cannonTransform.rotation * arcWidth;
+            widthDirection = -1;
+        }
+        else
+        {
+            widthDirection = 1;
+            canPos = cannonTransform.position;
+        }
+
+       List<Vector3> line = GetArcPoints(directionVector, force, canPos, cannonTransform.rotation, widthDirection);
 
         _vertices = new Vector3[line.Count];
 
@@ -79,37 +84,18 @@ public class CannonArc : MonoBehaviour
         mesh.vertices = _vertices;
         mesh.triangles = _triangles;
         mesh.uv = uvs;
-
-        //StartCoroutine(ShowSphere(line));
         
     }
 
-    //private IEnumerator ShowSphere(List<Vector3> points)
-    //{
-    //    if (isShowing) yield break;
-    //    isShowing = true;
 
-    //    float t = 0;
-
-    //    while (t < 5f)
-    //    {
-    //        sphere.transform.position = points[(int)Mathfs.Remap(0f,5f,0f,points.Count-1f, t)];
-    //        t += Time.deltaTime;
-    //        yield return null;
-    //    }
-
-    //    isShowing = false;
-    //}
-
-
-    public List<Vector3> GetArcPoints(Vector3 directionVector, Vector3 launchPosition, float force, Transform obj)
+    public List<Vector3> GetArcPoints(Vector3 directionVector, float force, Vector3 cannonTransform, Quaternion cannonRotation, float widthDirection)
     {
-        launchPosition += directionVector;
+        Vector3 launchPosition = cannonTransform + directionVector;
         float mass = 1f;
         float gravity = Physics.gravity.y;
         List<Vector3> linePoints = new();
 
-        float timeStepInterval = 0.1f;
+        float timeStepInterval = 0.002f;
         int maxSteps = (int)(arcLength / timeStepInterval);
         
 
@@ -121,14 +107,13 @@ public class CannonArc : MonoBehaviour
             calculatedPosition.y += gravity / 2 * Mathf.Pow(i * timeStepInterval, 2);
 
             linePoints.Add(calculatedPosition);
-            linePoints.Add(calculatedPosition + obj.transform.rotation * arcWidth); // kill for lineRenderer
-        }
+            linePoints.Add(calculatedPosition + cannonRotation * (arcWidth * widthDirection) );
 
-        //_lineRenderer.positionCount = linePoints.Count;
-        //for (int i = 0; i < maxSteps; i++)
-        //{
-        //    _lineRenderer.SetPosition(i, linePoints[i] + obj.transform.rotation * offsetDebug);
-        //}
+            Collider[] OS = Physics.OverlapSphere(calculatedPosition, 0.5f, arcMask);
+            if ( OS.Length != 0)
+                return linePoints;            
+
+        }
 
         return linePoints;
     }

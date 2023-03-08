@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Camera : MonoBehaviour
 {
-    [SerializeField] private Vector3 offset;
     [SerializeField] private Vector3 lookAtOffset;
     [SerializeField] private GameObject target;
     [SerializeField] private float rotSpeed;
+
+    [SerializeField] private Vector3 offset;
+
 
     private void Update()
     {

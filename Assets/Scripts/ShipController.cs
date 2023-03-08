@@ -6,30 +6,31 @@ using UnityEngine;
 [RequireComponent(typeof(Cannons))]
 public class ShipController : MonoBehaviour
 {
+    [Header("Movement")]
     [SerializeField] private float maxSpeed = 20f;
     [SerializeField] private float rotSpeed = 20f;
     [SerializeField] private float acceleration = 2f;
     [SerializeField] private float deacceleration = 1f;
 
-    [SerializeField] private GameObject[] flags;
-    [SerializeField] private Vector3 flagsUp;
+    [Header("Sails")]
+    [SerializeField] private GameObject[] sails;
+    [SerializeField] private Vector3 sailsUpPosition;
 
-    private Vector3 _flagsDown;
-    private float _flagSpeed = 0f;
-
+    private Vector3 _sailsDown;
+    private float _sailsSpeed = 0f;
     private float _speed;
+    private float _mousePos;
 
     private Cannons _cannons;
     private Cannons.CannonSide _side;
 
     private Action CannonState;
 
-    private float _mousePos;
 
     private void Start()
     {
         _speed = 0f;
-        _flagsDown = flags[0].transform.localScale;
+        _sailsDown = sails[0].transform.localScale;
 
         _cannons = GetComponent<Cannons>();
 
@@ -66,7 +67,10 @@ public class ShipController : MonoBehaviour
     private void SetCannonDegrees()
     {
         if (Input.GetMouseButtonDown(0))
+        {
             _cannons.LaunchCannons(_side);
+            CannonState = AwaitCannonInput;
+        }
 
         if (Input.GetKeyDown(KeyCode.Escape))
             CannonState = AwaitCannonInput;
@@ -89,26 +93,26 @@ public class ShipController : MonoBehaviour
         if (_speed > maxSpeed) _speed = maxSpeed;
         if (_speed < 0f) _speed = 0f;
 
-        if (_flagSpeed > 1f) _flagSpeed = 1f;
-        if (_flagSpeed < 0f) _flagSpeed = 0f;
+        if (_sailsSpeed > 1f) _sailsSpeed = 1f;
+        if (_sailsSpeed < 0f) _sailsSpeed = 0f;
 
         if (_speed > 2)
         {
-            foreach (var flag in flags)
+            foreach (var flag in sails)
             {
-                flag.transform.localScale = Vector3.Lerp(flagsUp, _flagsDown, _flagSpeed);
+                flag.transform.localScale = Vector3.Lerp(sailsUpPosition, _sailsDown, _sailsSpeed);
             }
-            _flagSpeed += Time.deltaTime;
+            _sailsSpeed += Time.deltaTime;
         }
 
         if (_speed < 1f)
         {
-            foreach (var flag in flags)
+            foreach (var flag in sails)
             {
-                flag.transform.localScale = Vector3.Lerp(_flagsDown, flagsUp, 1 - _flagSpeed);
+                flag.transform.localScale = Vector3.Lerp(_sailsDown, sailsUpPosition, 1 - _sailsSpeed);
 
             }
-            _flagSpeed -= Time.deltaTime;
+            _sailsSpeed -= Time.deltaTime;
         }
 
         transform.position += _speed * Time.deltaTime * transform.forward;

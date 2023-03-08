@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
+using TMathFunctions;
 
 public class CannonArc : MonoBehaviour
 {
@@ -16,9 +17,15 @@ public class CannonArc : MonoBehaviour
     public GameObject sphere;
 
     [SerializeField] private Vector3 arcWidth = new Vector3(0,0,-10);
+    [SerializeField] private Vector2 arcUVMap = new Vector3(10,10);
 
     [Range(0.1f,10)]
     [SerializeField] private float arcLength = 5;
+    public Vector3 rotationTest;
+
+    [SerializeField] private GameObject ship;
+
+    private bool isShowing = false;
 
     void Start()
     {
@@ -31,22 +38,18 @@ public class CannonArc : MonoBehaviour
 
     public void RenderArcMesh(Vector3 directionVector, Vector3 launchPosition, float force, Transform obj)
     {
-       // GetArcPoints(directionVector, launchPosition, force, obj);
-        //return;
 
        List<Vector3> line = GetArcPoints(directionVector, launchPosition, force, obj);
 
         _vertices = new Vector3[line.Count];
 
-        sphere.transform.position = line[0]; // DEBUG
-
         for (int i = 0; i < line.Count; i ++)
             _vertices[i] = line[i];
 
-        int width = line.Count / 2;
-        _triangles = new int[width * 6];
+        int height = line.Count / 2;
+        _triangles = new int[height * 6];
 
-        for (int i = 0, j = 0, t = 0; i < width - 1; i ++)
+        for (int i = 0, j = 0, t = 0; i < height - 1; i ++)
         {
             _triangles[t] = 0 + j;
             _triangles[t + 1] = 1 + j;
@@ -60,12 +63,43 @@ public class CannonArc : MonoBehaviour
             j += 2;
         }
 
+        Vector2[] uvs = new Vector2[_vertices.Length];
+
+        for (int y = 0, i = 0; y < height; y++)
+        {
+            for (int x = 0; x < 2; x++)
+            {
+                uvs[i] = new Vector2(x, y / (float)height);
+                i++;
+            }
+        }
+
         mesh.Clear();
 
         mesh.vertices = _vertices;
         mesh.triangles = _triangles;
+        mesh.uv = uvs;
 
+        //StartCoroutine(ShowSphere(line));
+        
     }
+
+    //private IEnumerator ShowSphere(List<Vector3> points)
+    //{
+    //    if (isShowing) yield break;
+    //    isShowing = true;
+
+    //    float t = 0;
+
+    //    while (t < 5f)
+    //    {
+    //        sphere.transform.position = points[(int)Mathfs.Remap(0f,5f,0f,points.Count-1f, t)];
+    //        t += Time.deltaTime;
+    //        yield return null;
+    //    }
+
+    //    isShowing = false;
+    //}
 
 
     public List<Vector3> GetArcPoints(Vector3 directionVector, Vector3 launchPosition, float force, Transform obj)

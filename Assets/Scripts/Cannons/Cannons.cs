@@ -115,6 +115,9 @@ public class Cannons : MonoBehaviour
 
         GameObject fireVFX = Instantiate(ShipConfigurations.Instance.CannonSmokeVFX, cannonArray[index].transform.position, dir, transform);
         Destroy(fireVFX, 2f);
+
+        CameraShake.Instance.AddTrauma(0.2f);
+
         CannonballPool.Instance.DestroyCannonball(cBall, 3f);
     }
 

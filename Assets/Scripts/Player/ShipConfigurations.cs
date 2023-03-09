@@ -30,6 +30,8 @@ public class ShipConfigurations : MonoBehaviour
     [SerializeField] public Transform CannonArcParent;
     [SerializeField] public GameObject CannonSmokeVFX;
 
+    [Header("Flag Settings")]
+    [SerializeField] public float FlagSpeed = 3f;
     public enum ShipType { Sloop, Brigantine, Galleon };
 
     public static ShipConfigurations Instance;

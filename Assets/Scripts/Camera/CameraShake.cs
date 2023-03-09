@@ -5,6 +5,7 @@ public class CameraShake : MonoBehaviour
 {
     [SerializeField] private GameObject cam;
     [SerializeField] private float reductionSpeed = 2;
+    [SerializeField] private float shakeSpeed = 10;
     [SerializeField] private float power = 3;
 
     [Header("Max Rotations")]
@@ -12,7 +13,6 @@ public class CameraShake : MonoBehaviour
     [SerializeField] private float maxPitchDeg = 50;
     [SerializeField] private float maxRollDeg = 50;
 
-    [SerializeField] private float shakeSpeed = 10;
     private float _trauma;
     private Quaternion _camStartRotation;  
     private int _seed = 124890;

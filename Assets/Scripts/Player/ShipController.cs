@@ -16,12 +16,18 @@ public class ShipController : MonoBehaviour
 
     private void Update()
     {
-        _cannonState();      
+        _cannonState();
+
+        if (Input.GetKeyDown(KeyCode.W))
+            _ship.SetSails(false);
+
+        if (Input.GetKeyDown(KeyCode.S))
+            _ship.SetSails(true);
     }
 
     private void FixedUpdate()
     {
-        _ship.Movement(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        _ship.Movement(Input.GetAxis("Horizontal"));
     }
 
     private void AwaitCannonInput()

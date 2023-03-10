@@ -25,19 +25,23 @@ public class Ship : MonoBehaviour
     private bool _changingSails = false;
     private bool _sailsAreRaised;
 
-    private void Start()
+    private void Awake()
     {
-        _speed = 0f;
         _sailsDownPosition = sails[0].transform.localScale;
-
-        _cannons = GetComponent<Cannons>();
-        _shipData = ShipConfigurations.Instance.GetData(shipType);
+        _sailsAreRaised = true;
 
         foreach (var flag in sails)
         {
             flag.transform.localScale = sailsUpPosition;
         }
-        _sailsAreRaised = true;
+    }
+    private void Start()
+    {
+        _speed = 0f;
+        
+        _cannons = GetComponent<Cannons>();
+        _shipData = ShipConfigurations.Instance.GetData(shipType);
+        
     }
 
     public void SetCannonDegrees(Cannons.CannonSide side)
@@ -73,7 +77,7 @@ public class Ship : MonoBehaviour
    
         if (_sailsAreRaised == raise) 
             return;
-
+        
         _changingSails = true;
         _sailsAreRaised = raise;
 
@@ -90,6 +94,7 @@ public class Ship : MonoBehaviour
             foreach (var flag in sails)
             {
                 flag.transform.localScale = Vector3.Lerp(a, b, t / ShipConfigurations.Instance.FlagSpeed);
+                Debug.Log(flag.transform.localScale);
             }
             t += Time.deltaTime;
             await Task.Yield();

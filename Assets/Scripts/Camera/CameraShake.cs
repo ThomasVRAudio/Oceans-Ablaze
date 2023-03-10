@@ -53,8 +53,8 @@ public class CameraShake : MonoBehaviour
     private void Shake()
     {
         float rollShake = Mathf.Pow(maxRollDeg * _trauma * (Mathf.PerlinNoise(_seed, _seed + Time.time * shakeSpeed) * 2 - 1), power);
-        float pitchShake = Mathf.Pow(maxRollDeg * _trauma * (Mathf.PerlinNoise(_seed + 800, _seed + 500 + Time.time * shakeSpeed) * 2 - 1), power);
-        float yawShake = Mathf.Pow(maxRollDeg * _trauma * (Mathf.PerlinNoise(_seed + 200, _seed + 300 + Time.time * shakeSpeed) * 2 - 1), power);
+        float pitchShake = Mathf.Pow(maxPitchDeg * _trauma * (Mathf.PerlinNoise(_seed + 800, _seed + 500 + Time.time * shakeSpeed) * 2 - 1), power);
+        float yawShake = Mathf.Pow(maxYawDeg * _trauma * (Mathf.PerlinNoise(_seed + 200, _seed + 300 + Time.time * shakeSpeed) * 2 - 1), power);
         cam.transform.localRotation = Quaternion.Euler(yawShake, pitchShake, rollShake) * _camStartRotation;
     }
 }

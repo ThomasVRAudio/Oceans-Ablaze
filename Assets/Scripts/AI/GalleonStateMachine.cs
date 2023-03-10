@@ -5,8 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(GalleonRoamingState), typeof(Ship))]
 public class GalleonStateMachine : MonoBehaviour
 {
+    [SerializeField] private LayerMask spawnLocationMask;
     private IVesselState _currentState;
-    private Vector3[] _travelLocations;
+    private List<Vector3> _travelLocations = new();
 
     private GalleonAttackingState AttackingState;
     private GalleonChasingState ChasingState;
@@ -17,8 +18,7 @@ public class GalleonStateMachine : MonoBehaviour
     public int CurrentLocationIndex { get; private set; }   
     public Ship Vessel { get; private set; }
 
-
-    public bool Debug;
+    public bool debug;
 
 
     private void Awake()
@@ -27,7 +27,8 @@ public class GalleonStateMachine : MonoBehaviour
         ChasingState = GetComponent<GalleonChasingState>();
         RoamingState = GetComponent<GalleonRoamingState>();
         Vessel = GetComponent<Ship>();
-        
+
+
     }
 
     private void Start()
@@ -35,20 +36,25 @@ public class GalleonStateMachine : MonoBehaviour
         float mapWidth = AIConfigurations.Instance.MapWidth;
         float mapHeight = AIConfigurations.Instance.MapHeight;
 
-        _travelLocations = new Vector3[]
+        for (int i = 0; i < 10; i++)
         {
-            new Vector3(Random.Range(-mapWidth / 2, mapWidth / 2), 0, Random.Range(-mapHeight / 2, mapHeight / 2)),
-            new Vector3(Random.Range(-mapWidth / 2, mapWidth / 2), 0, Random.Range(-mapHeight / 2, mapHeight / 2)),
-            new Vector3(Random.Range(-mapWidth / 2, mapWidth / 2), 0, Random.Range(-mapHeight / 2, mapHeight / 2)),
-            new Vector3(Random.Range(-mapWidth / 2, mapWidth / 2), 0, Random.Range(-mapHeight / 2, mapHeight / 2)),
-            new Vector3(Random.Range(-mapWidth / 2, mapWidth / 2), 0, Random.Range(-mapHeight / 2, mapHeight / 2)),
-        };
+            Collider[] coll;
+            Vector3 location;
+            do
+            {
+                location = new Vector3(Random.Range(-mapWidth / 2, mapWidth / 2), 0, Random.Range(-mapHeight / 2, mapHeight / 2));
+
+                coll = Physics.OverlapSphere(location, 20, spawnLocationMask);
+
+            } while (coll.Length > 0);
+            _travelLocations.Add(location);
+        }
 
         SetState(RoamingState);
     }
 
     private void Update()
-    {
+    {  
         _currentState.OnUpdate();
     }
 
@@ -69,7 +75,7 @@ public class GalleonStateMachine : MonoBehaviour
 
         do
         {
-          index = Random.Range(0, _travelLocations.Length);
+          index = Random.Range(0, _travelLocations.Count);
         } while (CurrentLocationIndex == index);
 
         CurrentLocationIndex = index;
@@ -78,7 +84,7 @@ public class GalleonStateMachine : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (_travelLocations == null || !Debug) return;
+        if (_travelLocations == null || !debug) return;
         
         Gizmos.color = Color.yellow;
 

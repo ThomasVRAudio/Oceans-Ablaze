@@ -115,6 +115,9 @@ public class Cannons : MonoBehaviour
 
         GameObject fireVFX = Instantiate(ShipConfigurations.Instance.CannonSmokeVFX, cannonArray[index].transform.position, dir, transform);
         Destroy(fireVFX, 2f);
+        
+        if (index % 3 == 0)
+            AudioManager.Instance.Play(AudioManager.Instance.SFX_CannonFire, cannonArray[index].transform.position);
 
         CameraShake.Instance.AddTrauma(0.2f);
 

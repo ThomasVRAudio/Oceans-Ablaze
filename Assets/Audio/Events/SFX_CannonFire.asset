@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b1892c50945c9b4a9036bc0d7a2930c, type: 3}
+  m_Name: SFX_CannonFire
+  m_EditorClassIdentifier: 
+  AudioClip:
+  - {fileID: 8300000, guid: 0239e82c0e943494d854cded758b5c94, type: 3}
+  - {fileID: 8300000, guid: c52fc2b1cb8c3444392a571169ad42b1, type: 3}
+  - {fileID: 8300000, guid: 50d7e7cf3c96a01498a4f44d96bbc954, type: 3}
+  - {fileID: 8300000, guid: d2f4ca989fc36d443938215eb9cd551b, type: 3}
+  MixerGroup: {fileID: 3916188563073109520, guid: 45d6864ade466da45b0eaaacc8108059, type: 2}
+  Is2D: 0
+  Loop: 0
+  IsAttached: 0
+  VolumeDecibel: 0
+  Pitch: 1
+  RandomVolume: 1
+  RandomPitch: 1
+  Priority: 0

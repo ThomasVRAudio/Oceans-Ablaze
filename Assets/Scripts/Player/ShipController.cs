@@ -27,7 +27,7 @@ public class ShipController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _ship.Movement(Input.GetAxis("Horizontal"));
+        _ship.SetRotation(Input.GetAxis("Horizontal"));
     }
 
     private void AwaitCannonInput()
@@ -53,7 +53,7 @@ public class ShipController : MonoBehaviour
             _cannonState = AwaitCannonInput;
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1))
         {
             _cannonState = AwaitCannonInput;
             _ship.StopAim();

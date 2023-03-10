@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b1892c50945c9b4a9036bc0d7a2930c, type: 3}
+  m_Name: SFX_WoodCreak
+  m_EditorClassIdentifier: 
+  AudioClip:
+  - {fileID: 8300000, guid: 0e5bc3170205dba4da9949f578d16673, type: 3}
+  MixerGroup: {fileID: 9132400992165559241, guid: 45d6864ade466da45b0eaaacc8108059, type: 2}
+  Is2D: 0
+  Loop: 1
+  IsAttached: 1
+  VolumeDecibel: -24
+  Pitch: 1
+  RandomVolume: 1
+  RandomPitch: 1
+  Priority: 0

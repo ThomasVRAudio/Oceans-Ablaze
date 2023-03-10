@@ -131,10 +131,6 @@ public class MapGenerator : MonoBehaviour {
     MapData GenerateMapData(Vector2 centre) {
 		NoiseMap Map = Noise.GenerateNoiseMap (mapChunkSize, mapChunkSize, seed, noiseScale, octaves, persistance, lacunarity, centre + offset, normalizeMode);
 		float [,] noiseMap = Map.noiseMap;
-  //      System.Random prng = new System.Random(seed);
-  //      string numChar = prng.Next().ToString();
-  //      char[] chars = numChar.ToCharArray();
-		//int randNoIslandSpawnNum = int.Parse(chars[1].ToString());
 
         Color[] colourMap = new Color[mapChunkSize * mapChunkSize];
 		for (int y = 0; y < mapChunkSize; y++) {
